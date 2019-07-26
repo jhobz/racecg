@@ -1,0 +1,49 @@
+{
+  "name": "racecg",
+  "version": "0.0.0",
+  "description": "Graphics builder for restreaming races, tournaments, and other competitive events.",
+  "homepage": "github.com/jhobz/racecg",
+  "author": {
+    "name": "Jeff Hobson",
+    "email": "jeffrey296@gmail.com",
+    "url": ""
+  },
+  "files": [
+    "dashboard",
+    "graphics",
+    "extension.js",
+    "extension"
+  ],
+  "keywords": [
+    "speedrun",
+    "race",
+    "races",
+    "restream",
+    "restreaming",
+    "restreamer",
+    "tournament",
+    "tournaments",
+    "nodecg-bundle"
+  ],
+  "nodecg": {
+    "compatibleRange": "^1.4.1",
+    "dashboardPanels": [
+      {
+        "name": "panel",
+        "title": "Panel",
+        "width": 5,
+        "file": "panel.html",
+        "headerColor": "#525F78"
+      }
+    ],
+    "graphics": [
+      {
+        "file": "index.html",
+        "width": 1920,
+        "height": 1080
+      }
+    ]
+  },
+  "repository": "https://github.com/nodecg/nodecg.git",
+  "license": "MIT"
+}
