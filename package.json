@@ -47,6 +47,7 @@
   "repository": "https://github.com/nodecg/nodecg.git",
   "license": "MIT",
   "devDependencies": {
+    "parcel-bundler": "^1.12.3",
     "typescript": "^3.5.3"
   }
 }
