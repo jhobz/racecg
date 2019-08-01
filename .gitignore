@@ -1,3 +1,9 @@
 node_modules
 coverage
 bower_components
+
+# Build outputs and generated files
+.cache
+dist
+dashboard
+graphics

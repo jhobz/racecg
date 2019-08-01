@@ -1,0 +1,13 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"rootDir": "src/extension",
+		"outDir": "dist/extension",
+		"paths": {
+			"*": ["./node_modules/*", "./types/*"]
+		}
+	},
+	"include": ["src/extension/**/*.ts"]
+}
