@@ -1,0 +1,13 @@
+{
+	"extends": "tslint:recommended",
+	"rules": {
+		"indent": [true, "tabs", 4],
+		"no-console": {
+			"severity": "warning",
+			"options": ["debug", "info", "log", "time", "timeEnd", "trace"]
+		},
+		"quotemark": [true, "single", "avoid-template"],
+		"semicolon": [true, "never"]
+	},
+	"defaultSeverity": "error"
+}
