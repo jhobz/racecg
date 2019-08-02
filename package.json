@@ -44,9 +44,14 @@
       {
         "name": "panel",
         "title": "Panel",
-        "width": 5,
-        "file": "panel.html",
-        "headerColor": "#525F78"
+        "width": 3,
+        "file": "panel.html"
+      },
+      {
+        "name": "twitch-panel",
+        "title": "Twitch",
+        "width": 4,
+        "file": "twitch-panel.html"
       }
     ],
     "graphics": [

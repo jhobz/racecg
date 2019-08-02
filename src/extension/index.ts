@@ -26,7 +26,13 @@ module.exports = (nodecg: NodeCG) => {
 		})
 	})
 
-	const useSpoofer = true
+	const spoofReplicant = nodecg.Replicant('spoofTwitch')
+	let useSpoofer: boolean
+
+	// TODO: Actually make this change what TwitchPS is pointing at while running
+	spoofReplicant.on('change', (newValue: boolean, oldValue: boolean) => {
+		useSpoofer = newValue
+	})
 
 	const opts: any = {
 		debug: true, // TODO: Replace with debug option
