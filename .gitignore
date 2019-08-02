@@ -2,6 +2,9 @@ node_modules
 coverage
 bower_components
 
+# VSCode
+*.code-workspace
+
 # Build outputs and generated files
 .cache
 dist

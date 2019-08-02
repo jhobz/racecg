@@ -3,6 +3,7 @@
 import TwitchPS = require('twitchps')
 import {NodeCG} from '../../types/nodecg'
 import {TwitchChannel} from '../../types/twitch'
+import {TwitchSpoofer} from './TwitchSpoofer'
 
 module.exports = (nodecg: NodeCG) => {
 	const initTopics: object[] = []
@@ -25,11 +26,21 @@ module.exports = (nodecg: NodeCG) => {
 		})
 	})
 
-	const pubsub = new TwitchPS({
-		debug: true,
+	const useSpoofer = true
+
+	const opts: any = {
+		debug: true, // TODO: Replace with debug option
 		init_topics: initTopics,
-		reconnect: true,
-	})
+		reconnect: true, // TODO: Replace with reconnect option
+	}
+
+	if (useSpoofer) {
+		opts.url = 'ws://localhost:8080'
+		const spoofer = new TwitchSpoofer('all')
+		spoofer.start()
+	}
+
+	const pubsub = new TwitchPS(opts)
 
 	pubsub.on('connected', () => {
 		nodecg.log.info('PubSub: connected')
@@ -44,12 +55,10 @@ module.exports = (nodecg: NodeCG) => {
 	})
 
 	pubsub.on('bits', (cheer: any) => {
-		nodecg.log.info('PubSub: received cheer:', cheer)
 		nodecg.sendMessage('cheer', cheer)
 	})
 
 	pubsub.on('subscribe', (subscription: any) => {
-		nodecg.log.info('PubSub: received subscription:', subscription)
 		nodecg.sendMessage('subscription', subscription)
 	})
 }
