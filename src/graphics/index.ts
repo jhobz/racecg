@@ -6,10 +6,10 @@ nodecg.listenFor('subscription', (subscription) => {
 	nodecg.log.info('Received subscription', subscription)
 })
 
-const twitchR = nodecg.Replicant('twitchState')
+const twitchR = nodecg.Replicant('twitch.state')
 
 twitchR.on('change', (newValue: any, oldValue) => {
-	document.getElementById('message').innerText = newValue.totals.bits.toString()
+	document.getElementById('message').innerText = newValue.sessionSums.bits.toString()
 })
 
 // You can access the NodeCG api anytime from the `window.nodecg` object

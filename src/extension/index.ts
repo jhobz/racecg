@@ -7,24 +7,24 @@ import {TwitchSpoofer} from './TwitchSpoofer'
 
 module.exports = (nodecg: NodeCG) => {
 	const initTopics: object[] = []
-	const twitchR: any = nodecg.Replicant('twitchState')
+	const twitchR: any = nodecg.Replicant('twitch.state')
 
-	// TODO: Replace this with a schema
-	// initialize twitchR first time
-	if (!twitchR.value) {
-		twitchR.value = {
-			totals: {
-				bits: 0,
-				subs: 0,
-			},
-		}
-	}
-
-	twitchR.value.topicsMap = {}
+	// Reset the list of authorized channels (we're about to read it)
+	twitchR.value.authorizedChannels = []
 
 	nodecg.bundleConfig.twitch.channels.forEach((channel: TwitchChannel) => {
-		const topicsMap = twitchR.value.topicsMap
-		topicsMap[channel.channel_name] = []
+		const channelData: any = {
+			authorizedTopics: [],
+			enabledTopics: [],
+			id: channel.channel_id,
+			name: channel.channel_name,
+			sessionTotals: {
+				bits: 0,
+				commerce: 0,
+				subs: 0,
+				whispers: 0,
+			},
+		}
 
 		channel.scopes.forEach((scope: string) => {
 			let topic: string
@@ -37,13 +37,18 @@ module.exports = (nodecg: NodeCG) => {
 					break
 			}
 
+			// TODO: Get rid of initTopics; add all topics dynamically
 			initTopics.push({
 				token: channel.token,
 				topic: `${topic}.${channel.channel_id}`,
 			})
 
-			topicsMap[channel.channel_name].push(topic)
+			channelData.authorizedTopics.push(topic)
+			// TODO: Read this from the replicant and add topics
+			channelData.enabledTopics.push(topic)
 		})
+
+		twitchR.value.authorizedChannels.push(channelData)
 	})
 
 	const spoofer = new TwitchSpoofer('all')
@@ -63,6 +68,7 @@ module.exports = (nodecg: NodeCG) => {
 	// TODO: Strongly type this replicant
 	twitchR.on('change', (newValue: any, oldValue: any) => {
 		useSpoofer = newValue.isSpoofing
+		// TODO: Subscribe and unsubscribe from topics based on enabledTopics
 	})
 
 	if (useSpoofer) {
@@ -88,7 +94,11 @@ module.exports = (nodecg: NodeCG) => {
 	})
 
 	pubsub.on('bits', (cheer: any) => {
-		twitchR.value.totals.bits += cheer.bits_used
+		const channel = twitchR.value.authorizedChannels.find((c: any) => c.id === cheer.channel_id)
+
+		channel.sessionTotals.bits += cheer.bits_used
+		twitchR.value.sessionSums.bits += cheer.bits_used
+
 		nodecg.sendMessage('cheer', cheer)
 	})
 
@@ -97,9 +107,19 @@ module.exports = (nodecg: NodeCG) => {
 	})
 
 	nodecg.listenFor('twitch.resetSession', () => {
-		twitchR.value.totals = {
+		twitchR.value.authorizedChannels.forEach((channel: any) => {
+			channel.sessionTotals = {
+				bits: 0,
+				commerce: 0,
+				subs: 0,
+				whispers: 0,
+			}
+		})
+		twitchR.value.sessionSums = {
 			bits: 0,
+			commerce: 0,
 			subs: 0,
+			whispers: 0,
 		}
 	})
 }
