@@ -15,11 +15,11 @@
     "build:graphics": "parcel build src/graphics/*.html --out-dir graphics --public-url ./",
     "build:extension": "tsc -b tsconfig.server.json"
   },
-  "homepage": "github.com/jhobz/racecg",
+  "homepage": "https://github.com/jhobz/racecg",
   "author": {
     "name": "Jeff Hobson",
     "email": "jeffrey296@gmail.com",
-    "url": ""
+    "url": "https://github.com/jhobz"
   },
   "files": [
     "dashboard",
@@ -41,12 +41,6 @@
   "nodecg": {
     "compatibleRange": "^1.4.1",
     "dashboardPanels": [
-      {
-        "name": "panel",
-        "title": "Panel",
-        "width": 3,
-        "file": "panel.html"
-      },
       {
         "name": "twitch-panel",
         "title": "Twitch",
