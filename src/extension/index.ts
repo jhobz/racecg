@@ -9,6 +9,7 @@ module.exports = (nodecg: NodeCG) => {
 	const initTopics: object[] = []
 	const twitchR: any = nodecg.Replicant('twitchState')
 
+	// TODO: Replace this with a schema
 	// initialize twitchR first time
 	if (!twitchR.value) {
 		twitchR.value = {
@@ -19,11 +20,11 @@ module.exports = (nodecg: NodeCG) => {
 		}
 	}
 
-	twitchR.value.channels = []
-	twitchR.value.topics = []
+	twitchR.value.topicsMap = {}
 
 	nodecg.bundleConfig.twitch.channels.forEach((channel: TwitchChannel) => {
-		twitchR.value.channels.push(channel.channel_name)
+		const topicsMap = twitchR.value.topicsMap
+		topicsMap[channel.channel_name] = []
 
 		channel.scopes.forEach((scope: string) => {
 			let topic: string
@@ -40,7 +41,8 @@ module.exports = (nodecg: NodeCG) => {
 				token: channel.token,
 				topic: `${topic}.${channel.channel_id}`,
 			})
-			twitchR.value.topics.push(topic)
+
+			topicsMap[channel.channel_name].push(topic)
 		})
 	})
 

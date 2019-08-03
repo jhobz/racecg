@@ -5,6 +5,7 @@ const checkElem: HTMLInputElement = document.querySelector('#spoofCheck')
 const statusElem: HTMLElement = document.querySelector('#pubsubConnection')
 const resetSessionElem: HTMLElement = document.querySelector('#resetSessionBtn')
 const twitchChannelsElem: HTMLElement = document.querySelector('#twitchChannels')
+const twitchTopicsElem: HTMLElement = document.querySelector('#twitchTopics')
 
 const sessionTotals = {
 	bits: 0,
@@ -26,10 +27,22 @@ twitchR.on('change', (newValue: any, oldValue: any) => {
 	}
 
 	let channelsHtml = ''
-	newValue.channels.forEach((channel: string) => {
-		channelsHtml += `<div class="channel">${channel}</div>`
+	console.log(newValue.topicsMap)
+	Object.keys(newValue.topicsMap).forEach((channel: string) => {
+		channelsHtml += `<button class="channel primary">${channel}</button>`
+
+		// FIXME: Technically, the below doesn't work properly. This is because I'm
+		// just waiting until I add in the component engine to simplify things.
+		let topicsHtml = ''
+		newValue.topicsMap[channel].forEach((topic: string) => {
+			const dashIndex = topic.indexOf('-') + 1
+			const t = topic.substring(dashIndex, topic.indexOf('-', dashIndex))
+			topicsHtml += `<button class="topic primary">${t}</button>`
+		})
+		twitchTopicsElem.innerHTML = topicsHtml
 	})
 	twitchChannelsElem.innerHTML = channelsHtml
+
 })
 
 checkElem.onchange = (ev) => {
@@ -39,7 +52,6 @@ checkElem.onchange = (ev) => {
 resetSessionElem.onclick = (ev) => {
 	// TODO: open dialog asking for confirmation
 	nodecg.sendMessage('twitch.resetSession')
-	console.log('sent message')
 }
 
 nodecg.listenFor('cheer', (cheer) => {

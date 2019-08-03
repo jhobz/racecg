@@ -27,21 +27,21 @@
 				float: right;
 			}
 
-			button.primary {
-				background-color: #1976d2;
+			button {
 				color: white;
-				border: 1px solid #104880;
 				padding: 10px;
 				cursor: pointer;
 			}
 
-			.channel {
-				background-color: #1a6ab9;
+			button.primary {
+				background-color: #1976d2;
 				border: 1px solid #104880;
+			}
+
+			.channel, .topic {
 				border-radius: 10px;
-				padding: 10px;
 				display: inline-block;
-				margin-right: 5px;
+				margin: 5px;
 			}
 		</style>
 	</head>
@@ -54,7 +54,9 @@
 		</div>
 		<div>
 			<div>Listening to events for:</div>
-			<div id="twitchChannels"></div>
+			<span id="twitchChannels"></span>
+			<div>Listening for following events:</div>
+			<span id="twitchTopics"></span>
 		</div>
 		<fieldset>
 			<label for="spoofCheck">Spoof Twitch events?</label>
