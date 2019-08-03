@@ -3,14 +3,17 @@
 <head>
 	<meta charset="UTF-8">
 	<style>
-		#message {
-			font-size: 10em;
+		.message {
+			font-size: 5em;
 		}
 	</style>
 </head>
 
 <body>
-	<div id="message">Something</div>
+	<div class="message">
+		<span>Session total bits: </span>
+		<span id="message">{{template}}</span>
+	</div>
 </body>
 
 <script src="./index.ts"></script>

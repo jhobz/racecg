@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<style>
+			.log-container {
+				background-color: #232c3d;
+				min-height: 50px;
+				max-height: 300px;
+				width: 525px;
+				border: inset 2px;
+				overflow-x: hidden;
+				overflow-y: auto;
+			}
+
+			.status {
+				font-weight: bold;
+			}
+			.status.warn {
+				color: #ff5d5d;
+			}
+			.status.primary {
+				color: rgb(113, 255, 113);
+			}
+
+			.float-right {
+				float: right;
+			}
+
+			button.primary {
+				background-color: #1976d2;
+				color: white;
+				border: 1px solid #104880;
+				padding: 10px;
+				cursor: pointer;
+			}
+
+			.channel {
+				background-color: #1a6ab9;
+				border: 1px solid #104880;
+				border-radius: 10px;
+				padding: 10px;
+				display: inline-block;
+				margin-right: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div>
+			<span>PubSub is </span>
+			<span class="status warn" id="pubsubConnection">disconnected.</span>
+			<button class="float-right primary" id="resetSessionBtn">Reset Session</button>
+		</div>
+		<div>
+			<div>Listening to events for:</div>
+			<div id="twitchChannels"></div>
+		</div>
+		<fieldset>
+			<label for="spoofCheck">Spoof Twitch events?</label>
+			<input type="checkbox" id="spoofCheck" />
+			<div class="ui-container">
+				<label for="spoofBits">Bits</label>
+				<input type="checkbox" id="spoofBits">
+				<label for="spoofBitsAnon">Bits (Anonymous)</label>
+				<input type="checkbox" id="spoofBitsAnon">
+				<label for="spoofSubs">Subs</label>
+				<input type="checkbox" id="spoofSubs">
+				<label for="spoofResubs">Subs (Resub)</label>
+				<input type="checkbox" id="spoofResubs">
+				<label for="spoofGiftSubs">Subs (Gift)</label>
+				<input type="checkbox" id="spoofGiftSubs">
+			</div>
+		</fieldset>
+		<div class="log-container" id="messageLog">
+		</div>
+	</body>
+
+	<script src="./twitch-panel.ts"></script>
+</html>

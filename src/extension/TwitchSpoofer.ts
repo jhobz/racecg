@@ -68,6 +68,11 @@ export class TwitchSpoofer {
 
 	public stop() {
 		this.stopEmitter(this.emitter)
+		delete this.emitter
+	}
+
+	public isRunning() {
+		return !!this.emitter
 	}
 
 	private handleMessage(msg: any, socket: any) {
