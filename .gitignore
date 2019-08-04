@@ -4,6 +4,7 @@ bower_components
 
 # VSCode
 *.code-workspace
+.vscode
 
 # Build outputs and generated files
 .cache
