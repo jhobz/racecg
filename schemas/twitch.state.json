@@ -1,0 +1,111 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"definitions": {
+		"TwitchTopic": {
+			"type": "string",
+			"enum": [
+				"channel-bits-events-v1",
+				"channel-bits-events-v2",
+				"channel-bits-badge-unlocks",
+				"channel-subscribe-events-v1",
+				"channel-commerce-events-v1",
+				"whispers"
+			]
+		},
+		"TwitchTopicTotals": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"bits": {
+					"type": "number",
+					"default": 0
+				},
+				"subs": {
+					"type": "number",
+					"default": 0
+				},
+				"commerce": {
+					"type": "number",
+					"default": 0
+				},
+				"whispers": {
+					"type": "number",
+					"default": 0
+				}
+			},
+			"required": [
+				"bits",
+				"subs",
+				"commerce",
+				"whispers"
+			]
+		},
+		"ChannelData": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"id": { "type": "string" },
+				"name": { "type": "string" },
+				"authorizedTopics": {
+					"type": "array",
+					"items": { "$ref": "#/definitions/TwitchTopic" }
+				},
+				"enabledTopics": {
+					"type": "array",
+					"items": { "$ref": "#/definitions/TwitchTopic" }
+				},
+				"sessionTotals": { "$ref": "#/definitions/TwitchTopicTotals" }
+			},
+			"required": [
+				"id",
+				"name",
+				"authorizedTopics",
+				"enabledTopics",
+				"sessionTotals"
+			]
+		}
+	},
+
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"url": {
+			"type": "string",
+			"default": "ws://pubsub-edge.twitch.tv"
+		},
+		"isConnected": {
+			"type": "boolean",
+			"default": false
+		},
+		"isSpoofing": {
+			"type": "boolean",
+			"default": false
+		},
+		"authorizedChannels": {
+			"type": "array",
+			"description": "Array containing data about authorized channels.",
+			"items": { "$ref": "#/definitions/ChannelData" }
+		},
+		"sessionSums": { "$ref": "#/definitions/TwitchTopicTotals" }
+	},
+	"required": [
+		"url",
+		"isConnected",
+		"isSpoofing",
+		"authorizedChannels",
+		"sessionSums"
+	],
+
+	"default": {
+		"url": "ws://pubsub-edge.twitch.tv",
+		"isConnected": false,
+		"isSpoofing": false,
+		"authorizedChannels": [],
+		"sessionSums": {
+			"bits": 0,
+			"subs": 0,
+			"commerce": 0,
+			"whispers": 0
+		}
+	}
+}

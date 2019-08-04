@@ -2,24 +2,24 @@
   "name": "racecg",
   "version": "0.0.0",
   "description": "Graphics builder for restreaming races, tournaments, and other competitive events.",
-  "main": "webpack.config.js",
+  "types": "types/riot-components.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "tslint 'src/**/*.ts'",
     "watch": "run-p watch:*",
-    "watch:dashboard": "parcel watch src/dashboard/*.html --out-dir dashboard --public-url ./",
-    "watch:graphics": "parcel watch src/graphics/*.html --out-dir graphics --public-url ./",
+    "watch:dashboard": "parcel watch src/dashboard/**/*.html --out-dir dashboard --public-url ./",
+    "watch:graphics": "parcel watch src/graphics/**/*.html --out-dir graphics --public-url ./",
     "watch:extension": "tsc -b tsconfig.server.json -w",
     "build": "run-p build:*",
     "build:dashboard": "parcel build src/dashboard/*.html --out-dir dashboard --public-url ./",
     "build:graphics": "parcel build src/graphics/*.html --out-dir graphics --public-url ./",
     "build:extension": "tsc -b tsconfig.server.json"
   },
-  "homepage": "github.com/jhobz/racecg",
+  "homepage": "https://github.com/jhobz/racecg",
   "author": {
     "name": "Jeff Hobson",
     "email": "jeffrey296@gmail.com",
-    "url": ""
+    "url": "https://github.com/jhobz"
   },
   "files": [
     "dashboard",
@@ -42,16 +42,15 @@
     "compatibleRange": "^1.4.1",
     "dashboardPanels": [
       {
-        "name": "panel",
-        "title": "Panel",
-        "width": 5,
-        "file": "panel.html",
-        "headerColor": "#525F78"
+        "name": "twitch-panel",
+        "title": "Twitch",
+        "width": 4,
+        "file": "twitch-panel.html"
       }
     ],
     "graphics": [
       {
-        "file": "index.html",
+        "file": "session-total-bits.html",
         "width": 1920,
         "height": 1080
       }
@@ -60,6 +59,10 @@
   "repository": "https://github.com/nodecg/nodecg.git",
   "license": "MIT",
   "devDependencies": {
+    "@riotjs/compiler": "^4.3.8",
+    "@riotjs/parcel-plugin-riot": "^4.0.1",
+    "@types/ws": "^6.0.1",
+    "acorn": "^6.2.1",
     "npm-run-all": "^4.1.5",
     "parcel-bundler": "^1.12.3",
     "prettier": "^1.18.2",
@@ -67,6 +70,8 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "twitchps": "github:jhobz/twitchps#bits-v2"
+    "riot": "^4.3.7",
+    "twitchps": "github:jhobz/twitchps#bits-v2",
+    "ws": "^7.1.1"
   }
 }
