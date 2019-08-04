@@ -1,3 +1,9 @@
+import * as riot from 'riot'
+import SessionTotal from '../components/session-total/session-total.riot'
+
+riot.register('session-total', SessionTotal)
+riot.mount('session-total')
+
 nodecg.listenFor('cheer', (cheer) => {
 	nodecg.log.info('Received cheer', cheer)
 })
@@ -11,7 +17,3 @@ const twitchR = nodecg.Replicant('twitch.state')
 twitchR.on('change', (newValue: any, oldValue) => {
 	document.getElementById('message').innerText = newValue.sessionSums.bits.toString()
 })
-
-// You can access the NodeCG api anytime from the `window.nodecg` object
-// Or just `nodecg` for short. Like this!:
-nodecg.log.info('Here\'s an example of using NodeCG\'s logging API!')

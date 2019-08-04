@@ -1,6 +1,7 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
+		"baseUrl": "./",
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		"rootDir": "src/extension",
