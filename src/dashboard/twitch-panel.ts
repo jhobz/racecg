@@ -1,4 +1,10 @@
+import * as riot from 'riot'
+import Checkbox from '../components/ui-checkbox/ui-checkbox.riot'
+
 (() => {
+
+riot.register('ui-checkbox', Checkbox)
+riot.mount('ui-checkbox')
 
 const twitchR: any = nodecg.Replicant('twitch.state')
 const checkElem: HTMLInputElement = document.querySelector('#spoofCheck')
