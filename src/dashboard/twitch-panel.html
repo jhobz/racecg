@@ -47,18 +47,16 @@
 	</head>
 
 	<body>
-		<ui-checkbox name="twix" color="primary" ischecked="true"></ui-checkbox>
 		<div>
 			<span>PubSub is </span>
 			<span class="status warn" id="pubsubConnection">disconnected.</span>
 			<button class="float-right primary" id="resetSessionBtn">Reset Session</button>
 		</div>
 		<div>
-			<div>Listening to events for:</div>
-			<span id="twitchChannels"></span>
-			<div>Listening for following events:</div>
-			<span id="twitchTopics"></span>
+			<div>Listening to:</div>
+			<div id="twitchChannels"></div>
 		</div>
+		<br />
 		<fieldset>
 			<label for="spoofCheck">Spoof Twitch events?</label>
 			<input type="checkbox" id="spoofCheck" />
