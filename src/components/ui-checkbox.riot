@@ -1,0 +1,49 @@
+<ui-checkbox>
+	<style>
+		:host {
+			--color-primary: 25, 118, 210;
+			--color-text: 255, 255, 255;
+		}
+
+		.ui-button {
+			color: rgba(var(--color-text), 0.8);
+			font-style: italic;
+			padding: 10px;
+			cursor: pointer;
+			border-radius: 2px;
+			min-width: 10px;
+			min-height: 10px;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			background: none;
+		}
+
+		.ui-button:hover {
+			background: rgba(var(--color-primary), 0.4);
+		}
+
+		.ui-button:focus {
+			outline: none;
+		}
+
+		.ui-button[checked] {
+			color: rgb(var(--color-text));
+			font-style: normal;
+			background: rgb(var(--color-primary));
+		}
+	</style>
+
+	<button class="ui-button" onclick={ onClick } checked={ state.isChecked }>{ props.name }</button>
+
+	<script type="ts">
+		export default {
+			onBeforeMount(props: any, state: any) {
+				state.isChecked = props.checked
+			},
+			onClick(e: MouseEvent) {
+				this.update({
+					isChecked: !this.state.isChecked,
+				})
+			}
+		}
+	</script>
+</ui-checkbox>

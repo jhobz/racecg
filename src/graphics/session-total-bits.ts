@@ -1,9 +1,3 @@
-import * as riot from 'riot'
-import SessionTotal from '../components/session-total/session-total.riot'
-
-riot.register('session-total', SessionTotal)
-riot.mount('session-total')
-
 nodecg.listenFor('cheer', (cheer) => {
 	nodecg.log.info('Received cheer', cheer)
 })

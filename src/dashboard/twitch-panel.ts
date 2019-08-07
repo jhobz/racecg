@@ -1,5 +1,12 @@
+import * as riot from 'riot'
+import Checkbox from '../components/ui-checkbox.riot'
+import Checktree from '../components/ui-checktree.riot'
+riot.register('ui-checkbox', Checkbox)
+riot.register('ui-checktree', Checktree)
+;
 (() => {
 
+const createChecktree = riot.component(Checktree)
 const twitchR: any = nodecg.Replicant('twitch.state')
 const checkElem: HTMLInputElement = document.querySelector('#spoofCheck')
 const statusElem: HTMLElement = document.querySelector('#pubsubConnection')
@@ -12,7 +19,6 @@ const sessionTotals = {
 	subs: 0,
 }
 
-// TODO: Strongly type this replicant
 twitchR.on('change', (newValue: any, oldValue: any) => {
 	checkElem.checked = newValue.isSpoofing
 	sessionTotals.bits = newValue.sessionSums.bits
@@ -26,21 +32,25 @@ twitchR.on('change', (newValue: any, oldValue: any) => {
 		statusElem.className = 'status warn'
 	}
 
-	let channelsHtml = ''
+	twitchChannelsElem.innerHTML = ''
 	newValue.authorizedChannels.forEach((channel: any) => {
-		channelsHtml += `<button class="channel primary">${channel.name}</button>`
+		const elem = document.createElement('ui-checktree')
+		elem.id = `ui-checktree-${channel.name}`
+		twitchChannelsElem.appendChild(elem)
 
-		// FIXME: Technically, the below doesn't work properly. This is because I'm
-		// just waiting until I add in the component engine to simplify things.
-		let topicsHtml = ''
-		channel.authorizedTopics.forEach((topic: string) => {
+		const topics = channel.authorizedTopics.map((topic: string) => {
 			const dashIndex = topic.indexOf('-') + 1
-			const t = topic.substring(dashIndex, topic.indexOf('-', dashIndex))
-			topicsHtml += `<button class="topic primary">${t}</button>`
+			return {
+				checked: channel.enabledTopics.includes(topic),
+				name: topic.substring(dashIndex, topic.indexOf('-', dashIndex)),
+			}
 		})
-		twitchTopicsElem.innerHTML = topicsHtml
+
+		createChecktree(elem, {
+			header: channel.name,
+			items: topics,
+		})
 	})
-	twitchChannelsElem.innerHTML = channelsHtml
 
 })
 

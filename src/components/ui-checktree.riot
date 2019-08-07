@@ -1,0 +1,31 @@
+<ui-checktree>
+	<style>
+		.header {
+			font-weight: bold;
+			margin: 20px 0 10px;
+		}
+
+		.list {
+			margin-left: 25px;
+		}
+
+		ui-checkbox {
+			margin: 5px;
+		}
+	</style>
+
+	<div class="header">{ props.header }</div>
+	<div class="list">
+		<ui-checkbox each="{ item in props.items }" {...item}></ui-checkbox>
+	</div>
+
+	<script type="ts">
+		import Checkbox from './ui-checkbox.riot'
+
+		export default {
+			components: {
+				Checkbox
+			},
+		}
+	</script>
+</ui-checktree>
