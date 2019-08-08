@@ -11,3 +11,5 @@ bower_components
 dist
 /dashboard
 /graphics
+/coverage
+.nyc_output
