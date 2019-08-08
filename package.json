@@ -4,10 +4,9 @@
   "description": "Graphics builder for restreaming races, tournaments, and other competitive events.",
   "types": "types/riot-components.d.ts",
   "scripts": {
-    "test": "mocha",
+    "test": "nyc mocha",
     "lint": "tslint 'src/**/*.ts'",
-    "cover": "nyc mocha",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "watch": "run-p watch:*",
     "watch:dashboard": "parcel watch src/dashboard/**/*.html --out-dir dashboard --public-url ./",
     "watch:graphics": "parcel watch src/graphics/**/*.html --out-dir graphics --public-url ./",
