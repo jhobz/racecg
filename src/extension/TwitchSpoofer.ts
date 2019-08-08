@@ -55,6 +55,11 @@ export class TwitchSpoofer {
 	}
 
 	public start() {
+		// Server has already started
+		if (this.wss || this.emitter) {
+			return
+		}
+
 		this.wss = new MockServer({ port: 8080 })
 		const self = this
 		this.wss.on('connection', (socket) => {
@@ -67,8 +72,18 @@ export class TwitchSpoofer {
 	}
 
 	public stop() {
+		// Server hasn't been started
+		if (!this.wss || !this.emitter) {
+			return
+		}
+
 		this.stopEmitter(this.emitter)
 		delete this.emitter
+
+		const self = this
+		this.wss.close(() => {
+			delete self.wss
+		})
 	}
 
 	public isRunning() {
