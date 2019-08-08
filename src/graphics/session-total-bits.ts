@@ -6,8 +6,9 @@ nodecg.listenFor('subscription', (subscription) => {
 	nodecg.log.info('Received subscription', subscription)
 })
 
-const twitchR = nodecg.Replicant('twitch.state')
+const twitchR = nodecg.Replicant('twitch.channels')
 
-twitchR.on('change', (newValue: any, oldValue) => {
-	document.getElementById('message').innerText = newValue.sessionSums.bits.toString()
+twitchR.on('change', (newValue: any[], oldValue) => {
+	const bitsTotal = newValue.map((c) => c.sessionTotals.bits).reduce((sum: number, bits: number) => sum + bits)
+	document.getElementById('message').innerText = bitsTotal
 })

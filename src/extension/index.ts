@@ -7,10 +7,11 @@ import {TwitchSpoofer} from './TwitchSpoofer'
 
 module.exports = (nodecg: NodeCG) => {
 	const initTopics: object[] = []
-	const twitchR: any = nodecg.Replicant('twitch.state')
+	const connectionR: any = nodecg.Replicant('twitch.connection')
+	const channelsR: any = nodecg.Replicant('twitch.channels')
 
 	// Reset the list of authorized channels (we're about to read it)
-	twitchR.value.authorizedChannels = []
+	channelsR.value = []
 
 	nodecg.bundleConfig.twitch.channels.forEach((channel: TwitchChannel) => {
 		const channelData: any = {
@@ -37,18 +38,15 @@ module.exports = (nodecg: NodeCG) => {
 					break
 			}
 
-			// TODO: Get rid of initTopics; add all topics dynamically
+			channelData.authorizedTopics.push(topic)
+			channelData.enabledTopics.push(topic)
 			initTopics.push({
 				token: channel.token,
 				topic: `${topic}.${channel.channel_id}`,
 			})
-
-			channelData.authorizedTopics.push(topic)
-			// TODO: Read this from the replicant and add topics
-			channelData.enabledTopics.push(topic)
 		})
 
-		twitchR.value.authorizedChannels.push(channelData)
+		channelsR.value.push(channelData)
 	})
 
 	const spoofer = new TwitchSpoofer('all')
@@ -56,19 +54,18 @@ module.exports = (nodecg: NodeCG) => {
 
 	const opts = {
 		debug: true, // TODO: Replace with debug option
-		init_topics: initTopics,
+		init_topics: initTopics, // required
 		reconnect: true, // TODO: Replace with reconnect option
 		url: 'wss://pubsub-edge.twitch.tv',
 	}
 
-	twitchR.isConnected = false
-	twitchR.url = opts.url
+	connectionR.value.isConnected = false
+	connectionR.value.url = opts.url
 
 	// TODO: Actually make this change what TwitchPS is pointing at while running
 	// TODO: Strongly type this replicant
-	twitchR.on('change', (newValue: any, oldValue: any) => {
+	connectionR.on('change', (newValue: any, oldValue: any) => {
 		useSpoofer = newValue.isSpoofing
-		// TODO: Subscribe and unsubscribe from topics based on enabledTopics
 	})
 
 	if (useSpoofer) {
@@ -80,13 +77,13 @@ module.exports = (nodecg: NodeCG) => {
 
 	pubsub.on('connected', () => {
 		nodecg.log.info('PubSub: connected')
-		twitchR.value.isConnected = true
-		twitchR.value.url = opts.url
+		connectionR.value.isConnected = true
+		connectionR.value.url = opts.url
 	})
 
 	pubsub.on('disconnected', () => {
 		nodecg.log.info('PubSub: disconnected')
-		twitchR.value.isConnected = false
+		connectionR.value.isConnected = false
 	})
 
 	pubsub.on('reconnect', () => {
@@ -94,10 +91,9 @@ module.exports = (nodecg: NodeCG) => {
 	})
 
 	pubsub.on('bits', (cheer: any) => {
-		const channel = twitchR.value.authorizedChannels.find((c: any) => c.id === cheer.channel_id)
+		const channel = channelsR.value.find((c: any) => c.id === cheer.channel_id)
 
 		channel.sessionTotals.bits += cheer.bits_used
-		twitchR.value.sessionSums.bits += cheer.bits_used
 
 		nodecg.sendMessage('cheer', cheer)
 	})
@@ -107,7 +103,7 @@ module.exports = (nodecg: NodeCG) => {
 	})
 
 	nodecg.listenFor('twitch.resetSession', () => {
-		twitchR.value.authorizedChannels.forEach((channel: any) => {
+		channelsR.value.forEach((channel: any) => {
 			channel.sessionTotals = {
 				bits: 0,
 				commerce: 0,
@@ -115,11 +111,23 @@ module.exports = (nodecg: NodeCG) => {
 				whispers: 0,
 			}
 		})
-		twitchR.value.sessionSums = {
-			bits: 0,
-			commerce: 0,
-			subs: 0,
-			whispers: 0,
+	})
+
+	interface TopicToggleData {
+		cid: string,
+		topic: string,
+		state: boolean
+	}
+
+	nodecg.listenFor('twitch.toggleTopic', ({ cid, topic, state }: TopicToggleData) => {
+		const channel = channelsR.value.find((c: any) => c.id === cid)
+
+		if (state) {
+			pubsub.addTopic([{ topic: `${topic}.${cid}` }])
+			channel.enabledTopics.push(topic)
+		} else {
+			pubsub.removeTopic([{ topic: `${topic}.${cid}` }])
+			channel.enabledTopics = channel.enabledTopics.filter((t: string) => t !== topic)
 		}
 	})
 }

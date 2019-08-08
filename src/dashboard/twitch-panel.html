@@ -43,6 +43,10 @@
 				display: inline-block;
 				margin: 5px;
 			}
+			
+			.warn {
+				color: rgb(255, 107, 107);
+			}
 		</style>
 	</head>
 
@@ -52,8 +56,10 @@
 			<span class="status warn" id="pubsubConnection">disconnected.</span>
 			<button class="float-right primary" id="resetSessionBtn">Reset Session</button>
 		</div>
+		<br />
 		<div>
 			<div>Listening to:</div>
+			<div class="warn">Subscriptions not yet implemented.</div>
 			<div id="twitchChannels"></div>
 		</div>
 		<br />

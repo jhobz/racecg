@@ -66,46 +66,8 @@
 		}
 	},
 
-	"type": "object",
+	"type": "array",
 	"additionalProperties": false,
-	"properties": {
-		"url": {
-			"type": "string",
-			"default": "ws://pubsub-edge.twitch.tv"
-		},
-		"isConnected": {
-			"type": "boolean",
-			"default": false
-		},
-		"isSpoofing": {
-			"type": "boolean",
-			"default": false
-		},
-		"authorizedChannels": {
-			"type": "array",
-			"description": "Array containing data about authorized channels.",
-			"items": { "$ref": "#/definitions/ChannelData" }
-		},
-		"sessionSums": { "$ref": "#/definitions/TwitchTopicTotals" }
-	},
-	"required": [
-		"url",
-		"isConnected",
-		"isSpoofing",
-		"authorizedChannels",
-		"sessionSums"
-	],
-
-	"default": {
-		"url": "ws://pubsub-edge.twitch.tv",
-		"isConnected": false,
-		"isSpoofing": false,
-		"authorizedChannels": [],
-		"sessionSums": {
-			"bits": 0,
-			"subs": 0,
-			"commerce": 0,
-			"whispers": 0
-		}
-	}
+	"items": { "$ref": "#/definitions/ChannelData" },
+	"default": []
 }

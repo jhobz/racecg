@@ -1,0 +1,24 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"url": {
+			"type": "string",
+			"default": "ws://pubsub-edge.twitch.tv"
+		},
+		"isConnected": {
+			"type": "boolean",
+			"default": false
+		},
+		"isSpoofing": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"required": [
+		"url",
+		"isConnected",
+		"isSpoofing"
+	]
+}
