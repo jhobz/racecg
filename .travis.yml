@@ -2,7 +2,7 @@ language: node_js
 node_js:
 - stable
 before_install:
-- openssl aes-256-cbc -K $encrypted_33090a166214_key -iv $encrypted_33090a166214_iv
+- openssl aes-256-cbc -K $encrypted_50d1e789a1c2_key -iv $encrypted_50d1e789a1c2_iv
   -in gae-secret.json.enc -out gae-secret.json -d
 after_success:
 - npm run coverage
