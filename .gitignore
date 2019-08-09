@@ -13,3 +13,6 @@ dist
 /graphics
 /coverage
 .nyc_output
+
+# Config & keys
+gae-secret.json
