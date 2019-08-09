@@ -4,7 +4,7 @@
   "description": "Graphics builder for restreaming races, tournaments, and other competitive events.",
   "types": "types/riot-components.d.ts",
   "scripts": {
-    "start": "cd ../.. && nodecg start",
+    "start": "cd nodecg && npm start",
     "test": "nyc mocha",
     "lint": "tslint 'src/**/*.ts'",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
