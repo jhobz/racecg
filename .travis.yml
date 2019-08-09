@@ -4,15 +4,22 @@ node_js:
 before_install:
 - openssl aes-256-cbc -K $encrypted_50d1e789a1c2_key -iv $encrypted_50d1e789a1c2_iv
   -in gae-secret.json.enc -out gae-secret.json -d
+- git clone https://github.com/nodecg/nodecg.git
+- mv nodecg ../
+- cd ../nodecg
+- npm install --production
+- mv ../racecg bundles/
+- cd bundles/racecg
+script:
+- npm test
+- npm build
 after_success:
 - npm run coverage
-before_deploy:
-- git clone https://github.com/nodecg/nodecg.git
-- cd nodecg
-- npm install --production
-- cd bundles
-- ln -s ../.. racecg
-- cd ../..
+# before_deploy:
+# - cd nodecg
+# - cd bundles
+# - ln -s ../.. racecg
+# - cd ../..
 deploy:
   provider: gae
   keyfile: gae-secret.json
