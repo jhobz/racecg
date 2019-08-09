@@ -10,9 +10,9 @@ before_deploy:
 - git clone https://github.com/nodecg/nodecg.git
 - cd nodecg
 - npm install --production
-- ln -s ../dist bundles/racecg
+- cd ..
+- ln -s ./ bundles/racecg
 deploy:
   provider: gae
   keyfile: gae-secret.json
   project: racecg
-  skip_cleanup: true
