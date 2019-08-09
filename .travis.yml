@@ -12,6 +12,7 @@ before_deploy:
 - npm install --production
 - cd bundles
 - ln -s ../.. racecg
+- cd ../..
 deploy:
   provider: gae
   keyfile: gae-secret.json
