@@ -1,5 +1,22 @@
 language: node_js
 node_js:
-  - "stable"
+- stable
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_33090a166214_key -iv $encrypted_33090a166214_iv
+  -in client-secret.json.enc -out client-secret.json -d
+
 after_success:
-  - npm run coverage
+- npm run coverage
+
+before_deploy:
+- git clone https://github.com/nodecg/nodecg.git
+- cd nodecg
+- npm install --production
+- ln -s ../dist bundles/racecg
+# ADD CONFIG FILE
+
+deploy:
+  provider: gae
+  keyfile: client-secret.json
+  project: racecg

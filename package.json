@@ -4,6 +4,7 @@
   "description": "Graphics builder for restreaming races, tournaments, and other competitive events.",
   "types": "types/riot-components.d.ts",
   "scripts": {
+    "start": "cd ../.. && nodecg start",
     "test": "nyc mocha",
     "lint": "tslint 'src/**/*.ts'",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
@@ -13,8 +14,8 @@
     "watch:extension": "tsc -b tsconfig.server.json -w",
     "watch:test": "mocha --extension ts -w",
     "build": "run-p build:*",
-    "build:dashboard": "parcel build src/dashboard/*.html --out-dir dashboard --public-url ./",
-    "build:graphics": "parcel build src/graphics/*.html --out-dir graphics --public-url ./",
+    "build:dashboard": "parcel build src/dashboard/**/*.html --out-dir dashboard --public-url ./",
+    "build:graphics": "parcel build src/graphics/**/*.html --out-dir graphics --public-url ./",
     "build:extension": "tsc -b tsconfig.server.json"
   },
   "homepage": "https://github.com/jhobz/racecg",
