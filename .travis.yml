@@ -22,6 +22,8 @@ after_success:
 before_deploy:
 - cd ../..
 - ln -s bundles/racecg/app.yaml app.yaml
+- npm install -g json
+- json -I -f package.json -e 'this.engines.node=">=10"'
 deploy:
   provider: gae
   keyfile: bundles/racecg/gae-secret.json
