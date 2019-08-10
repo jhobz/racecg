@@ -30,7 +30,4 @@ deploy:
   api_key:
     secure: UxXtGESKnmIR6n5VvRxHFpPtkmFieSmGArG2v6tPUoHdSF6dNcPtOXT6RR6eNHpZGOwwLnSDFyntcUocod/JEKtwGwxE11KIDSX6qZpAVcCFRC+6vQMjxOdaGBmmvcJO73uG8Sa6HfExFHPAxyTbWhzAw7Jp5Z7zhj50ku3BhMnV8+hjGqNwD+Mp3ByC+NpslDFMZyUHWzzwcw517vnLmn+466lb++ug+ox2MQDYb8JcocyvOdhzkaSWPimz1T1j6Cw7bi2VGK/wvjDJFx4ibIY8dwr4p1VZ51BxAwdQzWv6CA2amX2st50XhJvJ2bs+8ivHWr9rVFCA95hjtn6oVFgn+Qkfqy1MHAvyhiFIf1dE1CDF7S/MB8KurT+Gtrek0X/F0XDRDwE23ibsxg9AmRiIGSsAE9qCLB4T8riV8EA6y1JpWkChNL5/zdYOgJuPkuqvCuSEHIu/j81DMKgyEyDMSjFeGRdq6vfNZZpAp0gcC6p73+sZ009inc6VcmkhWOFFRdvuqocZvMHIDPQ3RQIvMDmhBxC0sR/6X45ku4JdWEhCEGsW5B6md0iUE2pBIs7EcM8/7WRdIxwcrNTc5GYEDCLzszTytRXl24hxae6PACpveNurPDcyBEvc5x+vYGtxVcAxFgys+9GwWg7k6yofuBWmi4O9ZUvVCUQgiV8=
   app: racecg
-  run:
-    - npm install -g json
-    - json -I -f cfg/nodecg.json -e "this.port=$PORT"
   skip_cleanup: true
