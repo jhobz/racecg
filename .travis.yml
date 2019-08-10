@@ -21,6 +21,7 @@ after_success:
 - npm run coverage
 before_deploy:
 - cd ../..
+- mv bundles/racecg/Procfile Procfile
 # - ln -s bundles/racecg/app.yaml app.yaml
 # - npm install -g json
 # - json -I -f package.json -e 'this.engines.node=">=10"'
