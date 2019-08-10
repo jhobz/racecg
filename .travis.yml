@@ -10,6 +10,7 @@ before_install:
 - cd ../nodecg
 - npm install --production
 - mv ../racecg bundles/
+- mkdir cfg
 - cd bundles/racecg
 - mv nodecg-gae.json ../../cfg/nodecg.json
 - mv racecg-gae.json ../../cfg/racecg.json
