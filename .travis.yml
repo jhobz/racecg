@@ -24,6 +24,6 @@ before_deploy:
 - ln -s bundles/racecg/app.yaml app.yaml
 deploy:
   provider: gae
-  keyfile: gae-secret.json
+  keyfile: bundles/racecg/gae-secret.json
   project: racecg
   skip_cleanup: true
