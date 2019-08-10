@@ -15,4 +15,7 @@ dist
 .nyc_output
 
 # Config & keys
+nodecg*.json
+racecg*.json
 gae-secret.json
+secrets.tar

@@ -16,7 +16,8 @@
     "build": "run-p build:*",
     "build:dashboard": "parcel build src/dashboard/**/*.html --out-dir dashboard --public-url ./",
     "build:graphics": "parcel build src/graphics/**/*.html --out-dir graphics --public-url ./",
-    "build:extension": "tsc -b tsconfig.server.json"
+    "build:extension": "tsc -b tsconfig.server.json",
+    "encrypt": "tar cvf secrets.tar nodecg-gae.json racecg-gae.json gae-secret.json && travis encrypt-file secrets.tar"
   },
   "homepage": "https://github.com/jhobz/racecg",
   "author": {
