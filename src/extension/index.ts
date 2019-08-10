@@ -73,6 +73,10 @@ module.exports = (nodecg: NodeCG) => {
 		spoofer.start()
 	}
 
+	/* DEBUG: TO BE REMOVED */
+	console.log(process.env.PORT)
+	/* DEBUG: TO BE REMOVED */
+
 	const pubsub = new TwitchPS(opts)
 
 	pubsub.on('connected', () => {
