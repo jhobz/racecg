@@ -5,11 +5,7 @@ set -x
 RED='\033[0;31m'
 NC='\033[0m'
 
-if ! ssh $REMOTE_USER@$REMOTE_HOST ; then
-	echo -e "${RED}Failed to ssh to host. There is probably more output above.${NC}"
-	exit 1
-fi
-
+ssh $REMOTE_USER@$REMOTE_HOST << EOF
 if ! cd ~/racecg ; then
 	echo -e "${RED}Failed to locate directory racecg. Are you sure you're the right user?${NC}"
 	exit 1
@@ -20,3 +16,5 @@ git reset --hard origin/master && \
 npm i --production && \
 npm run build && \
 pm2 restart NodeCG
+exit
+EOF
