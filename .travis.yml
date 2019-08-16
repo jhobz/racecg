@@ -1,40 +1,28 @@
 language: node_js
 node_js:
-- stable
-before_install:
-- openssl aes-256-cbc -K $encrypted_50d1e789a1c2_key -iv $encrypted_50d1e789a1c2_iv
-  -in secrets.tar.enc -out secrets.tar -d
-- tar xvf secrets.tar
-- git clone https://github.com/jhobz/nodecg.git
-- mv nodecg ../
-- cd ../nodecg
-- npm install --production
-- mv ../racecg bundles/
-- mkdir cfg
-- cd bundles/racecg
-- mv nodecg-gae.json ../../cfg/nodecg.json
-- mv racecg-gae.json ../../cfg/racecg.json
+  - stable
 script:
-- npm test
-- npm run build
+  - npm test
+  - npm run build
 after_success:
-- npm run coverage
-- wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-- chmod +x send.sh
-- ./send.sh success $WEBHOOK_URL
+  # Report code coverage to coveralls
+  - npm run coverage
+  # Send build status to Discord
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
 after_failure:
-- wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-- chmod +x send.sh
-- ./send.sh failure $WEBHOOK_URL
-before_deploy:
-- cd ../..
-- mv bundles/racecg/Procfile Procfile
-# - ln -s bundles/racecg/app.yaml app.yaml
-# - npm install -g json
-# - json -I -f package.json -e 'this.engines.node=">=10"'
-deploy:
-  provider: heroku
-  api_key:
-    secure: UxXtGESKnmIR6n5VvRxHFpPtkmFieSmGArG2v6tPUoHdSF6dNcPtOXT6RR6eNHpZGOwwLnSDFyntcUocod/JEKtwGwxE11KIDSX6qZpAVcCFRC+6vQMjxOdaGBmmvcJO73uG8Sa6HfExFHPAxyTbWhzAw7Jp5Z7zhj50ku3BhMnV8+hjGqNwD+Mp3ByC+NpslDFMZyUHWzzwcw517vnLmn+466lb++ug+ox2MQDYb8JcocyvOdhzkaSWPimz1T1j6Cw7bi2VGK/wvjDJFx4ibIY8dwr4p1VZ51BxAwdQzWv6CA2amX2st50XhJvJ2bs+8ivHWr9rVFCA95hjtn6oVFgn+Qkfqy1MHAvyhiFIf1dE1CDF7S/MB8KurT+Gtrek0X/F0XDRDwE23ibsxg9AmRiIGSsAE9qCLB4T8riV8EA6y1JpWkChNL5/zdYOgJuPkuqvCuSEHIu/j81DMKgyEyDMSjFeGRdq6vfNZZpAp0gcC6p73+sZ009inc6VcmkhWOFFRdvuqocZvMHIDPQ3RQIvMDmhBxC0sR/6X45ku4JdWEhCEGsW5B6md0iUE2pBIs7EcM8/7WRdIxwcrNTc5GYEDCLzszTytRXl24hxae6PACpveNurPDcyBEvc5x+vYGtxVcAxFgys+9GwWg7k6yofuBWmi4O9ZUvVCUQgiV8=
-  app: racecg
-  skip_cleanup: true
+  # Send build status to Discord
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
+# before_deploy:
+#   - openssl aes-256-cbc -K $encrypted_50d1e789a1c2_key -iv $encrypted_50d1e789a1c2_iv
+#     -in secrets.tar.enc -out secrets.tar -d
+#   - tar xvf secrets.tar
+# deploy:
+  # deploy master to staging
+  # - provider: script
+  #   script: bash scripts/deploy.sh
+  #   on:
+  #     branch: master
