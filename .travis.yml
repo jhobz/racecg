@@ -1,6 +1,19 @@
 language: node_js
 node_js:
   - stable
+before_install:
+  # - openssl aes-256-cbc -K $encrypted_50d1e789a1c2_key -iv $encrypted_50d1e789a1c2_iv
+  #   -in secrets.tar.enc -out secrets.tar -d
+  # - tar xvf secrets.tar
+  - git clone https://github.com/jhobz/nodecg.git
+  - mv nodecg ../
+  - cd ../nodecg
+  - npm install --production
+  - mv ../racecg bundles/
+  - mkdir cfg
+  - cd bundles/racecg
+  # - mv nodecg-gae.json ../../cfg/nodecg.json
+  # - mv racecg-gae.json ../../cfg/racecg.json
 script:
   - npm test
   - npm run build
