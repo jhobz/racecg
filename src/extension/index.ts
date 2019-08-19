@@ -53,7 +53,7 @@ module.exports = (nodecg: NodeCG) => {
 	let useSpoofer: boolean
 
 	const opts = {
-		debug: true, // TODO: Replace with debug option
+		debug: process.env.NODE_ENV !== 'production',
 		init_topics: initTopics, // required
 		reconnect: true, // TODO: Replace with reconnect option
 		url: 'wss://pubsub-edge.twitch.tv',
@@ -72,10 +72,6 @@ module.exports = (nodecg: NodeCG) => {
 		opts.url = 'ws://localhost:8080'
 		spoofer.start()
 	}
-
-	/* DEBUG: TO BE REMOVED */
-	console.log(process.env.PORT)
-	/* DEBUG: TO BE REMOVED */
 
 	const pubsub = new TwitchPS(opts)
 

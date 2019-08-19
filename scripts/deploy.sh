@@ -11,6 +11,7 @@ if ! cd ~/racecg ; then
 	exit 1
 fi
 
+export NODE_ENV=production
 git fetch origin master && \
 git reset --hard origin/master && \
 npm i --production && \
