@@ -6,12 +6,11 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 ssh $REMOTE_USER@$REMOTE_HOST << EOF
-if ! cd ~/racecg ; then
+if ! cd ~/nodecg/bundles/racecg ; then
 	echo -e "${RED}Failed to locate directory racecg. Are you sure you're the right user?${NC}"
 	exit 1
 fi
 
-export NODE_ENV=production
 git fetch origin master && \
 git reset --hard origin/master && \
 npm i --production && \
