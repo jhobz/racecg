@@ -1,6 +1,6 @@
 import {Server as MockServer} from 'ws'
 
-type TwitchEvent = 'subscription'|'resubscription'|'subscription_gift'|'bits'|'bits_anon'
+export type TwitchEvent = 'subscription'|'resubscription'|'subscription_gift'|'bits'|'bits_anon'
 
 const SUPPORTED_EVENTS: TwitchEvent[] = [
 	'bits',
@@ -10,10 +10,15 @@ const SUPPORTED_EVENTS: TwitchEvent[] = [
 	// 'resubscription',
 ]
 
+/**
+ * Currently supported topics
+ */
+/*
 const SUPPORTED_TOPICS = [
 	'channel-bits-events-v2',
 	'channel-subscribe-events-v1',
 ]
+*/
 
 const TOPICS_MAP = {
 	bits: 'channel-bits-events-v2',
@@ -37,21 +42,26 @@ export class TwitchSpoofer {
 	private events: TwitchEvent[]
 	private wss: MockServer
 	private frequency: number
+	private port: number
 	private emitter: NodeJS.Timeout
 	private topicSubscriptions: TopicClientsMap = {}
 
-	constructor(eventsToSpoof: TwitchEvent[]|'all', frequency: number = 10000) {
+	constructor(eventsToSpoof: TwitchEvent[]|'all', frequency: number = 10000, port: number = 8080) {
 		if (!eventsToSpoof) {
 			throw new Error('You must define some events to spoof!')
 		}
 
 		if (eventsToSpoof === 'all') {
 			this.events = SUPPORTED_EVENTS
+		} else if (eventsToSpoof.find((ev) => !SUPPORTED_EVENTS.includes(ev))) {
+			throw new Error('One or more of the events you included is unsupported.\n' +
+				`Supported events are: ${SUPPORTED_EVENTS.join(', ')}`)
 		} else {
 			this.events = eventsToSpoof
 		}
 
 		this.frequency = frequency
+		this.port = port
 	}
 
 	public start() {
@@ -60,7 +70,7 @@ export class TwitchSpoofer {
 			return
 		}
 
-		this.wss = new MockServer({ port: 8080 })
+		this.wss = new MockServer({ port: this.port })
 		const self = this
 		this.wss.on('connection', (socket) => {
 			socket.on('message', (message) => {
@@ -132,7 +142,7 @@ export class TwitchSpoofer {
 			// TODO: Check against valid topics, add ERROR_BADTOPIC if invalid
 			response.error = ''
 		} else {
-			response.error = 'ERROR_BADMESSAGE'
+			response.error = 'ERR_BADMESSAGE'
 		}
 
 		return JSON.stringify(response)
