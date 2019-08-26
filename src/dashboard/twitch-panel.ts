@@ -73,7 +73,10 @@ nodecg.listenFor('subscription', (sub) => {
 function logTwitchEvent(type: string, data: any) {
 	const elem = document.querySelector('#messageLog')
 	const html = elem.innerHTML
-	elem.innerHTML = `<pre>${type.toUpperCase()}: ${JSON.stringify(data)}</pre>` + html
+
+	// TODO: Break this out into a riot component and style it
+	elem.innerHTML = `<p>${type.toUpperCase()}: ${data.user_name} - ${data.bits_used}<br />` +
+					 `${data.chat_message}</p>` + html
 }
 
 function onTopicToggle(cid: string, topic: string, state: boolean) {
