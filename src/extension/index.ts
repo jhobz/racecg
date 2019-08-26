@@ -49,7 +49,7 @@ module.exports = (nodecg: NodeCG) => {
 		channelsR.value.push(channelData)
 	})
 
-	const spoofer = new TwitchSpoofer('all')
+	const spoofer = new TwitchSpoofer('all', 10000, 8082)
 	let useSpoofer: boolean
 
 	const opts = {
@@ -69,7 +69,7 @@ module.exports = (nodecg: NodeCG) => {
 	})
 
 	if (useSpoofer) {
-		opts.url = 'ws://localhost:8080'
+		opts.url = 'ws://localhost:8082'
 		spoofer.start()
 	}
 

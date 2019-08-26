@@ -9,8 +9,17 @@
 				max-height: 300px;
 				width: 525px;
 				border: inset 2px;
-				overflow-x: hidden;
 				overflow-y: auto;
+				font-family: monospace;
+			}
+
+			.log-container p {
+				margin: 0;
+				padding: 13px 5px;
+			}
+
+			.log-container p:nth-of-type(2n) {
+				background: #313b4d;
 			}
 
 			.status {
@@ -91,8 +100,7 @@
 			</div>
 		</fieldset>
 		<br />
-		<div class="log-container" id="messageLog">
-		</div>
+		<div class="log-container" id="messageLog"></div>
 	</body>
 
 	<script src="./twitch-panel.ts"></script>
