@@ -1,28 +1,25 @@
 import {Server as MockServer} from 'ws'
 
-export type TwitchEvent = 'subscription'|'resubscription'|'subscription_gift'|'bits'|'bits_anon'
+export type TwitchEvent = 'subscription'|'resubscription'|'subscription_gift'|'bits'|'bits_anon'|'bits_entitled'
 
 const SUPPORTED_EVENTS: TwitchEvent[] = [
 	'bits',
 	'bits_anon',
+	'bits_entitled',
 	// 'subscription',
 	// 'subscription_gift',
 	// 'resubscription',
 ]
 
-/**
- * Currently supported topics
- */
-/*
 const SUPPORTED_TOPICS = [
 	'channel-bits-events-v2',
 	'channel-subscribe-events-v1',
 ]
-*/
 
 const TOPICS_MAP = {
 	bits: 'channel-bits-events-v2',
 	bits_anon: 'channel-bits-events-v2',
+	bits_entitled: 'channel-bits-events-v2',
 	resubscription: 'channel-subscribe-events-v1',
 	subscription: 'channel-subscribe-events-v1',
 	subscription_gift: 'channel-subscribe-events-v1',
@@ -103,8 +100,29 @@ export class TwitchSpoofer {
 	private handleMessage(msg: any, socket: any) {
 		const message = JSON.parse(msg)
 		const type = message.type
+		const doTopicsExist = message.data &&
+			message.data.topics &&
+			Array.isArray(message.data.topics) &&
+			message.data.topics.length
+		const areTopicsValid = doTopicsExist &&
+			message.data.topics.every((topic: string) => {
+				const dotIndex = topic.indexOf('.')
+
+				return dotIndex >= 0 &&
+					dotIndex < topic.length - 1 &&
+					SUPPORTED_TOPICS.includes(topic.substring(0, dotIndex)) &&
+					!isNaN(+topic.substring(dotIndex + 1))
+		})
 
 		if (type === 'LISTEN') {
+			if (!doTopicsExist) {
+				socket.send(this.generateResponse(type, message.nonce, 'unexpected http status 400'))
+				return
+			} else if (!areTopicsValid) {
+				socket.send(this.generateResponse(type, message.nonce, 'Invalid Topic'))
+				return
+			}
+
 			message.data.topics.forEach((topic: string) => {
 				const topicSubscribers = this.topicSubscriptions[topic]
 
@@ -113,36 +131,43 @@ export class TwitchSpoofer {
 				} else {
 					this.topicSubscriptions[topic] = [socket]
 				}
-
 			})
 		} else if (type === 'UNLISTEN') {
-			message.data.topics.forEach((topic: string) => {
-				const topicSubscribers = this.topicSubscriptions[topic]
-				const index = topicSubscribers.indexOf(socket)
+			if (areTopicsValid) {
+				message.data.topics.forEach((topic: string) => {
+					const topicSubscribers = this.topicSubscriptions[topic]
 
-				if (index > -1) {
-					topicSubscribers.splice(index, 1)
-				}
-			})
+					if (topicSubscribers) {
+						const index = topicSubscribers.indexOf(socket)
+
+						if (index > -1) {
+							topicSubscribers.splice(index, 1)
+						}
+					} // else fail gracefully
+				})
+			} // else fail gracefully
+		} else if (type !== 'PING') {
+			// NOTE: Twitch actually doesn't respond to invalid request types
+			// We respond here to make things easier to test and provide more feedback
+			socket.send(this.generateResponse(type, message.nonce,
+				'ERR_BADMESSAGE: Twitch would not have sent this response'))
+			return
 		}
 
 		socket.send(this.generateResponse(type, message.nonce))
 	}
 
-	private generateResponse(type: string, nonce: string) {
+	private generateResponse(type: string, nonce: string, error: string = '') {
 		const response: TwitchResponse = {
-			nonce,
+			nonce: nonce || '',
 			type: 'RESPONSE',
 		}
 
 		if (type === 'PING') {
 			response.type = 'PONG'
 			delete response.nonce
-		} else if (type === 'LISTEN' || type === 'UNLISTEN') {
-			// TODO: Check against valid topics, add ERROR_BADTOPIC if invalid
-			response.error = ''
 		} else {
-			response.error = 'ERR_BADMESSAGE'
+			response.error = error
 		}
 
 		return JSON.stringify(response)
@@ -177,14 +202,20 @@ export class TwitchSpoofer {
 
 		switch (type) {
 			case 'bits':
+				message = this.generateBitMessage(channelId)
+				break
 			case 'bits_anon':
-				message = this.generateBitMessage(type, channelId)
+				message = this.generateBitMessage(channelId, true)
 				break
-			case 'resubscription':
-			case 'subscription':
-			case 'subscription_gift':
-				message = this.generateSubMessage(type, channelId)
+			case 'bits_entitled':
+				message = this.generateBitMessage(channelId, false, true)
 				break
+			// TODO: To be implemented
+			// case 'resubscription':
+			// case 'subscription':
+			// case 'subscription_gift':
+			// 	message = this.generateSubMessage(type, channelId)
+			// 	break
 		}
 
 		return {
@@ -196,7 +227,7 @@ export class TwitchSpoofer {
 		}
 	}
 
-	private generateBitMessage(type: 'bits'|'bits_anon', channelId: string) {
+	private generateBitMessage(channelId: string, isAnonymous = false, isEntitled = false) {
 		const message: any = {
 			data: {
 				badge_entitlement: null,
@@ -213,14 +244,13 @@ export class TwitchSpoofer {
 				user_id: Math.floor(Math.random() * 99999999).toString(),
 				user_name: 'ThisPersonCheeredAnAmount'.substr(0, Math.random() * 21 + 4),
 			},
-			is_anonymous: type === 'bits_anon' ? true : null,
+			is_anonymous: isAnonymous || null,
 			message_id: '8145728a4-35f0-4cf7-9dc0-f2ef24de1eb6', // TODO: Actually update this
 			message_type: 'bits_event',
 			version: '1.0',
 		}
 
-		// Randomly decide whether the cheer entitled a new badge or not
-		if (Math.random() < 0.1) {
+		if (isEntitled) {
 			// TODO: Make it randomly select from all possible badge values
 			message.data.badge_entitlement = {
 				new_version: 25000,
@@ -231,7 +261,8 @@ export class TwitchSpoofer {
 		return message
 	}
 
-	private generateSubMessage(type: 'resubscription'|'subscription'|'subscription_gift', channelId: string) {
-		return ''
-	}
+	// TODO: To be implemented
+	// private generateSubMessage(type: 'resubscription'|'subscription'|'subscription_gift', channelId: string) {
+	// 	return ''
+	// }
 }
