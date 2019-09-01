@@ -613,8 +613,9 @@ describe('TwitchSpoofer class', () => {
 			})
 		})
 
+		// TODO: Rework this upon adding manual triggering of events
 		it('should send messages to all clients subscribed to a topic', (done) => {
-			ts = new TwitchSpoofer('all', 5) // 1ms is too fast, 5ms seems ok
+			ts = new TwitchSpoofer('all', 10) // 5ms is too fast for Travis, 10ms seems ok
 			const ws = new WebSocket('http://localhost:8080')
 			const ws2 = new WebSocket('http://localhost:8080')
 			ts.start()
