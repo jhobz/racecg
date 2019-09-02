@@ -47,10 +47,26 @@
 				border: 1px solid #104880;
 			}
 
+			input[type=number] {
+				-moz-appearance: textfield;
+			}
+
+			input[type=number]::-webkit-inner-spin-button,
+			input[type=number]::-webkit-outer-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
+
 			.channel, .topic {
 				border-radius: 10px;
 				display: inline-block;
 				margin: 5px;
+			}
+
+			.session-input {
+				width: 100px;
+				display: block;
+				margin: 5px auto;
 			}
 			
 			/* .warn {
@@ -75,7 +91,10 @@
 		<div>
 			<span>PubSub is </span>
 			<span class="status warn" id="pubsubConnection">disconnected.</span>
-			<button class="float-right primary" id="resetSessionBtn">Reset Session</button>
+			<div class="float-right">
+				<input class="session-input" type="number" id="sessionStart" placeholder="Initial value (0)"/>
+				<button class="primary" id="resetSessionBtn">Reset Session</button>
+			</div>
 		</div>
 		<div class="status warn">Subscriptions not yet implemented.</div>
 		<div>

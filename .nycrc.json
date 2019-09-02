@@ -3,7 +3,7 @@
 	"all": true,
 	"extension": [".ts"],
 	"include": [
-		"src/**/*.ts"
+		"src/extension/*.ts"
 	],
 	"exclude": [
 		"**/*.spec.ts"

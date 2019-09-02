@@ -58,7 +58,8 @@ checkElem.onchange = (ev) => {
 
 resetSessionElem.onclick = (ev) => {
 	// TODO: open dialog asking for confirmation
-	nodecg.sendMessage('twitch.resetSession')
+	const sessionStartElem: HTMLInputElement = document.querySelector('#sessionStart')
+	nodecg.sendMessage('twitch.resetSession', parseInt(sessionStartElem.value, 10))
 }
 
 nodecg.listenFor('cheer', (cheer) => {
