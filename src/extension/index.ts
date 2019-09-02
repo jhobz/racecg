@@ -102,10 +102,10 @@ module.exports = (nodecg: NodeCG) => {
 		nodecg.sendMessage('subscription', subscription)
 	})
 
-	nodecg.listenFor('twitch.resetSession', () => {
+	nodecg.listenFor('twitch.resetSession', (startValue: number) => {
 		channelsR.value.forEach((channel: any) => {
 			channel.sessionTotals = {
-				bits: 0,
+				bits: startValue / channelsR.value.length || 0,
 				commerce: 0,
 				subs: 0,
 				whispers: 0,
