@@ -1,9 +1,10 @@
 // TODO: Switch this to the package once PR is merged, or to
 //       my fork if merge takes too long
 import TwitchPS = require('twitchps')
-import {NodeCG} from '../../types/nodecg'
-import {TwitchChannel} from '../../types/twitch'
-import {TwitchSpoofer} from './TwitchSpoofer'
+import { NodeCG } from '../../types/nodecg'
+import { Goal } from '../../types/replicants/goals'
+import { TwitchChannel } from '../../types/twitch'
+import { TwitchSpoofer } from './TwitchSpoofer'
 
 module.exports = (nodecg: NodeCG) => {
 	const initTopics: object[] = []
@@ -129,5 +130,11 @@ module.exports = (nodecg: NodeCG) => {
 			pubsub.removeTopic([{ topic: `${topic}.${cid}` }])
 			channel.enabledTopics = channel.enabledTopics.filter((t: string) => t !== topic)
 		}
+	})
+
+	// GOALS
+	const goalsR = nodecg.Replicant<Goal[]>('goals')
+	goalsR.on('change', (newValue, oldValue) => {
+		// Figure out current state of goals
 	})
 }

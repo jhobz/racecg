@@ -1,0 +1,27 @@
+<ui-editable-row>
+	<style>
+		.flex-container {
+			display: flex;
+			margin: 5px 0;
+		}
+
+		input {
+			border: none;
+			border-right: 1px solid rgba(0, 0, 0, 0.2);
+			padding: 5px;
+			min-width: 0;
+		}
+	</style>
+
+	<div class="flex-container">
+		<input each="{ col in props.cols }" type="{ col.type }" value="{ state.data[col.name] }" placeholder="{ col.name }">
+	</div>
+
+	<script type="ts">
+		export default {
+			onBeforeMount(props: any, state: any) {
+				state.data = props.data
+			}
+		}
+	</script>
+</ui-editable-row>

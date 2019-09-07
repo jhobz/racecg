@@ -1,0 +1,43 @@
+<ui-editable-table>
+	<style>
+		header label {
+			display: inline-block;
+			text-transform: capitalize;
+			font-weight: bold;
+		}
+
+		.empty {
+			color: rgba(255, 255, 255, 0.4);
+			font-style: italic;
+		}
+	</style>
+
+	<div class="table">
+		<header>
+			<label each="{ col in props.cols }" style="width: { 100 / props.cols.length }%">{ col.name }</label>
+		</header>
+		<ui-editable-row each="{ entry in state.entries }" cols="{ props.cols }" data="{ entry }"></ui-editable-row>
+		<p class="empty" if="{ !state.entries.length }">There are currently no goals. You can add one by using the button below.</p>
+		<button id="addBtn" onclick="{ addButton }">+</button>
+	</div>
+
+	<script type="ts">
+		import EditableRow from './ui-editable-row.riot'
+
+		export default {
+			onBeforeMount(props: any, state: any) {
+				state.entries = props.entries
+			},
+			components: {
+				EditableRow
+			},
+			addButton() {
+				const items = this.state.entries
+				items.push({})
+				this.update({
+					entries: items,
+				})
+			}
+		}
+	</script>
+</ui-editable-table>

@@ -1,0 +1,30 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"type": "array",
+	"additionalItems": false,
+	"items": {
+		"type": "object",
+		"additionalProperties": false,
+		"properties": {
+			"name": { "type": "string" },
+			"value": { "type": "number" },
+			"currency": {
+				"type":"string",
+				"enum": [
+					"all",
+					"bits",
+					"gifts",
+					"merch",
+					"subs",
+					"tips"
+				],
+				"default": "all"
+			}
+		},
+		"required": [
+			"name",
+			"value"
+		]
+	},
+	"default": []
+}

@@ -50,6 +50,12 @@
         "title": "Twitch",
         "width": 4,
         "file": "twitch-panel.html"
+      },
+      {
+        "name": "goals-panel",
+        "title": "Goals",
+        "width": 4,
+        "file": "goals-panel.html"
       }
     ],
     "graphics": [
