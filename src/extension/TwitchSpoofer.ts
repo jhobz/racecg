@@ -6,7 +6,7 @@ const SUPPORTED_EVENTS: TwitchEvent[] = [
 	'bits',
 	'bits_anon',
 	'bits_entitled',
-	// 'subscription',
+	'subscription',
 	// 'subscription_gift',
 	// 'resubscription',
 ]
@@ -212,10 +212,10 @@ export class TwitchSpoofer {
 				break
 			// TODO: To be implemented
 			// case 'resubscription':
-			// case 'subscription':
+			case 'subscription':
 			// case 'subscription_gift':
-			// 	message = this.generateSubMessage(type, channelId)
-			// 	break
+				message = this.generateSubMessage(channelId)
+				break
 		}
 
 		return {
@@ -262,7 +262,31 @@ export class TwitchSpoofer {
 	}
 
 	// TODO: To be implemented
-	// private generateSubMessage(type: 'resubscription'|'subscription'|'subscription_gift', channelId: string) {
-	// 	return ''
-	// }
+	private generateSubMessage(channelId: string, isGift = false, isResub = false) {
+		const message: any = {
+			'channel_id': channelId,
+			'channel_name': 'TheLongestNameAllowedIs25'.substr(0, Math.random() * 21 + 4),
+			'context': 'sub',
+			'cumulative-months': Math.floor(Math.random() * 24),
+			'display_name': 'DisplayThisName',
+			'streak-months': Math.floor(Math.random() * 24),
+			'sub_message': {
+				emotes: [],
+				message: ('Sub, sub sub sub! But what if the message were much, ' +
+							'much longer? I don\'t know what the maximum length for messages ' +
+							'is on Twitch, but I will make this as long as I think is reasonable ' +
+							'to design around. Something like this oughta be ok.').substr(0, Math.random() * 274 + 6),
+			},
+			'sub_plan': 'Prime',
+			'sub_plan_name': 'Channel Subscription (example_channel)',
+			'time': Date.now().toString(),
+			'user_id': Math.floor(Math.random() * 99999999).toString(),
+			'user_name': 'ThisPersonSubscribed'.substr(0, Math.random() * 16 + 4),
+			// message_id: '8145728a4-35f0-4cf7-9dc0-f2ef24de1eb6', // TODO: Actually update this
+			// message_type: 'bits_event',
+			// version: '1.0',
+		}
+
+		return message
+	}
 }

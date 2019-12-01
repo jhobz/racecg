@@ -99,6 +99,10 @@ module.exports = (nodecg: NodeCG) => {
 	})
 
 	pubsub.on('subscribe', (subscription: any) => {
+		const channel = channelsR.value.find((c: any) => c.id === subscription.channel_id)
+
+		channel.sessionTotals.subs++
+
 		nodecg.sendMessage('subscription', subscription)
 	})
 

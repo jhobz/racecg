@@ -57,6 +57,11 @@
         "file": "session-total-bits.html",
         "width": 1920,
         "height": 1080
+      },
+      {
+        "file": "session-total-dollars.html",
+        "width": 1920,
+        "height": 1080
       }
     ]
   },

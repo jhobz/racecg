@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<style>
+		.message {
+			font-size: 5em;
+			font-family: 'Segoe UI', sans-serif;
+			font-weight: bold;
+		}
+
+		.on-screen {
+			padding: 0 4px;
+			width: 274px;
+			border: 5px solid red;
+			color: white;
+			-webkit-text-stroke: 2px black;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="message">
+		<span>Session total dollars: </span>
+		<div id="message" class="on-screen">{{template}}</div>
+	</div>
+</body>
+
+<script src="./session-total-dollars.ts"></script>
+</html>
