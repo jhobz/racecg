@@ -101,9 +101,15 @@ module.exports = (nodecg: NodeCG) => {
 	pubsub.on('subscribe', (subscription: any) => {
 		const channel = channelsR.value.find((c: any) => c.id === subscription.channel_id)
 
-		channel.sessionTotals.subs++
+		// Anonymous gift subs currently generate two subscription events: one with no
+		// user name and one with the name "anonymousgifter". We need to make sure
+		// not to include the blank one.
+		// TODO: Fix this in TwitchPS library
+		if (subscription.user_name) {
+			channel.sessionTotals.subs++
 
-		nodecg.sendMessage('subscription', subscription)
+			nodecg.sendMessage('subscription', subscription)
+		}
 	})
 
 	nodecg.listenFor('twitch.resetSession', (startValue: number) => {
