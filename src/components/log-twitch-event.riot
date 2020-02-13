@@ -1,0 +1,59 @@
+<log-twitch-event>
+	<style>
+		.flex {
+			display: flex;
+		}
+
+		.flex-vertical {
+			flex-direction: column;
+			justify-content: flex-start;
+		}
+
+		.message-container {
+			align-items: flex-start;
+			margin-bottom: 1em;
+		}
+
+		.icon {
+			margin: 0 10px 0 0;
+			padding: 10px;
+			font-size: 3em;
+			border-radius: 5px;
+			background: #313b4d;
+			flex-grow: 0;
+		}
+
+		.text {
+			flex-grow: 1;
+		}
+
+		.title {
+			font-size: 1.2em;
+			font-weight: bold;
+		}
+
+		.amount {
+			font-style: italic;
+		}
+	</style>
+
+	<div class="message-container flex">
+		<div class="icon">{ props.type.charAt(0).toUpperCase() }</div>
+		<div class="text flex flex-vertical">
+			<div><span class="title">{ props.name }</span></div>
+			<div><span class="amount">{ props.amount }</span></div>
+			<div><p>{ props.message }</p></div>
+		</div>
+	</div>
+
+	<script type="ts">
+		export default {
+			onBeforeMount(props: any, state: any) {
+				state.type = props.type
+				state.name = props.name
+				state.amount = props.amount
+				state.message = props.message
+			}
+		}
+	</script>
+</log-twitch-event>

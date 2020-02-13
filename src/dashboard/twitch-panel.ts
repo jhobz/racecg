@@ -1,4 +1,5 @@
 import * as riot from 'riot'
+import LogTwitchEvent from '../components/log-twitch-event.riot'
 import Checkbox from '../components/ui-checkbox.riot'
 import Checktree from '../components/ui-checktree.riot'
 
@@ -6,8 +7,10 @@ import Checktree from '../components/ui-checktree.riot'
 (() => {
 riot.register('ui-checkbox', Checkbox)
 riot.register('ui-checktree', Checktree)
+riot.register('log-twitch-event', LogTwitchEvent)
 
 const createChecktree = riot.component(Checktree)
+const createTwitchLog = riot.component(LogTwitchEvent)
 const connectionR: any = nodecg.Replicant('twitch.connection')
 const channelsR: any = nodecg.Replicant('twitch.channels')
 const checkElem: HTMLInputElement = document.querySelector('#spoofCheck')
@@ -72,12 +75,15 @@ nodecg.listenFor('subscription', (sub) => {
 // Helper functions
 
 function logTwitchEvent(type: string, data: any) {
-	const elem = document.querySelector('#messageLog')
-	const html = elem.innerHTML
-
-	// TODO: Break this out into a riot component and style it
-	elem.innerHTML = `<p>${type.toUpperCase()}: ${data.user_name} - ${data.bits_used}<br />` +
-					 `${data.chat_message}</p>` + html
+	const elem = document.createElement('log-twitch-event')
+	const container = document.querySelector('#messageLog')
+	container.prepend(elem)
+	createTwitchLog(elem, {
+		amount: type === 'cheer' ? data.bits_used + ' bits' : data.cumulative_months + ' months',
+		message: data.chat_message,
+		name: data.user_name,
+		type,
+	})
 }
 
 function onTopicToggle(cid: string, topic: string, state: boolean) {
