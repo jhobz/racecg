@@ -74,7 +74,7 @@
     "@types/chai": "^4.2.9",
     "@types/mocha": "^5.2.7",
     "@types/ws": "^6.0.4",
-    "acorn": "^6.4.0",
+    "acorn": "^6.4.1",
     "chai": "^4.2.0",
     "coveralls": "^3.0.9",
     "eslint": "^6.8.0",
