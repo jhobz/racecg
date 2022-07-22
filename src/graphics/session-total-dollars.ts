@@ -28,5 +28,7 @@ twitchR.on('change', (newValue: any[], oldValue) => {
 							  .map((c) => c.sessionTotals.bits).reduce((sum: number, bits: number) => sum + bits)
 	const subsTotal = newValue.filter((channel) => channelId ? channel.id === channelId : true)
 							  .map((c) => c.sessionTotals.subs).reduce((sum: number, subs: number) => sum + subs)
-	document.getElementById('message').innerText = `$${((bitsTotal / 100) + (subsTotal * 2.50)).toFixed(2)}`
+	const commerceTotal = newValue.filter((channel) => channelId ? channel.id === channelId : true)
+							  .map((c) => c.sessionTotals.commerce).reduce((sum: number, commerce: number) => sum + commerce)
+	document.getElementById('message').innerText = `$${((bitsTotal / 100) + (subsTotal * 2.50) + (commerceTotal / 100)).toFixed(2)}`
 })

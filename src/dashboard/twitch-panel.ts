@@ -1,6 +1,9 @@
 import * as riot from 'riot'
+// @ts-ignore
 import LogTwitchEvent from '../components/log-twitch-event.riot'
+// @ts-ignore
 import Checkbox from '../components/ui-checkbox.riot'
+// @ts-ignore
 import Checktree from '../components/ui-checktree.riot'
 
 // TODO: Get rid of this IIFE
@@ -17,6 +20,7 @@ const checkElem: HTMLInputElement = document.querySelector('#spoofCheck')
 const statusElem: HTMLElement = document.querySelector('#pubsubConnection')
 const resetSessionElem: HTMLElement = document.querySelector('#resetSessionBtn')
 const twitchChannelsElem: HTMLElement = document.querySelector('#twitchChannels')
+let sessionAddBtnElems: NodeListOf<HTMLElement>
 
 connectionR.on('change', (newValue: any, oldValue: any) => {
 	checkElem.checked = newValue.isSpoofing
@@ -30,6 +34,9 @@ connectionR.on('change', (newValue: any, oldValue: any) => {
 	}
 })
 
+// TODO: This all gets run every time any event comes in, meaning DOM elements
+//		 are getting recreated often for no reason. Should check only for when
+//		 the list of channels has actually changed.
 channelsR.on('change', (newValue: any, oldValue: any) => {
 	twitchChannelsElem.innerHTML = ''
 	newValue.forEach((channel: any) => {
@@ -52,6 +59,17 @@ channelsR.on('change', (newValue: any, oldValue: any) => {
 			header: channel.name,
 			items: topics,
 		})
+	})
+
+	sessionAddBtnElems = document.querySelectorAll('[id^="submit-"]')
+	sessionAddBtnElems.forEach(val => {
+		val.onclick = (ev) => {
+			const channel = val.id.slice(val.id.indexOf('-') + 1)
+			const dollarsElem: HTMLInputElement = document.querySelector(`#add-${channel}`)
+			if (dollarsElem.value) {
+				nodecg.sendMessage('twitch.addToSession', { channel, amount: parseInt(dollarsElem.value, 10) })
+			}
+		}
 	})
 })
 

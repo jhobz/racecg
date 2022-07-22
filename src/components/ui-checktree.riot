@@ -6,6 +6,11 @@
 			text-align: center;
 		}
 
+		input {
+			width: 55px;
+			margin-right: 10px;
+		}
+
 		ui-checkbox {
 			margin: 5px;
 		}
@@ -15,6 +20,8 @@
 	<div class="list">
 		<ui-checkbox each="{ item in props.items }" {...item}></ui-checkbox>
 	</div>
+	<br />
+	<div><input type="number" id="add-{props.header}" placeholder="Cents"><button class="primary" id="submit-{props.header}">Add money</button></div>
 
 	<script type="ts">
 		import Checkbox from './ui-checkbox.riot'
