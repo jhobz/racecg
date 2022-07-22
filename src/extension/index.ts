@@ -123,6 +123,13 @@ module.exports = (nodecg: NodeCG) => {
 		})
 	})
 
+	// TODO: Track this in a different field called "other" rather than in "commerce"
+	nodecg.listenFor('twitch.addToSession', ({ channel, amount }) => {
+		channelsR.value.filter((c: any) => c.name === channel).forEach((channel: any) => {
+			channel.sessionTotals.commerce += amount
+		})
+	})
+
 	interface TopicToggleData {
 		cid: string,
 		topic: string,
