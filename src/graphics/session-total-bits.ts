@@ -6,6 +6,7 @@ nodecg.listenFor('subscription', (subscription) => {
 	nodecg.log.info('Received subscription', subscription)
 })
 
+// @ts-ignore
 const twitchR = nodecg.Replicant('twitch.channels')
 
 twitchR.on('change', (newValue: any[], oldValue) => {
