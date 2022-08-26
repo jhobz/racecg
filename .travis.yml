@@ -1,13 +1,12 @@
 language: node_js
 node_js:
-  - "18"
   - "10"
 
 addons:
   ssh_known_hosts: possiblybad.com
 
 before_install:
-- git clone https://github.com/jhobz/nodecg.git
+- git clone https://github.com/nodecg/nodecg.git
 - mv nodecg ../
 - cd ../nodecg
 - npm i --production
